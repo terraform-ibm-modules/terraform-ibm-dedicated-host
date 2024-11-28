@@ -1,4 +1,4 @@
-module github.com/terraform-ibm-modules/terraform-ibm-module-template
+module github.com/terraform-ibm-modules/terraform-ibm-dedicated-host
 
 go 1.22.4
 
