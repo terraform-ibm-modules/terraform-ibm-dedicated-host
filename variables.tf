@@ -42,7 +42,7 @@ variable "class" {
 }
 
 variable "profile" {
-  description = "Profile for the dedicated hosts(size and resources). Refer https://cloud.ibm.com/docs/vpc?topic=vpc-dh-profiles&interface=ui for more details"
+  description = "Profile for the dedicated hosts(size and resources). Refer [Understanding DH Profile](https://cloud.ibm.com/docs/vpc?topic=vpc-dh-profiles&interface=ui) for more details"
   type        = string
   default     = "bx2-host-152x608"
 }
