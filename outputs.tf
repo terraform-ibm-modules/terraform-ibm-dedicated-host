@@ -9,22 +9,10 @@
 #   - Use variable validation when possible
 #
 
-output "account_id" {
-  description = "An alpha-numeric value identifying the account ID."
-  value       = ibm_resource_instance.cos_instance.account_id
+output "dedicated_host_id" {
+  value = ibm_is_dedicated_host.test_dh.id
 }
 
-output "guid" {
-  description = "The GUID of the resource instance."
-  value       = ibm_resource_instance.cos_instance.account_id
-}
-
-output "id" {
-  description = "The unique identifier of the resource instance."
-  value       = ibm_resource_instance.cos_instance.id
-}
-
-output "crn" {
-  description = "The CRN of the resource instance."
-  value       = ibm_resource_instance.cos_instance.crn
+output "dedicate_host_group_id" {
+  value = ibm_is_dedicated_host_group.test_dh.id
 }
