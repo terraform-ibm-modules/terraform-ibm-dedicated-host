@@ -1,30 +1,11 @@
 ########################################################################################################################
-# Outputs
+# Outputs for Dedicated Hosts and Dedicated Host groups
 ########################################################################################################################
 
-#
-# Developer tips:
-#   - Below are some good practise sample outputs
-#   - They should be updated for outputs applicable to the module being added
-#   - Use variable validation when possible
-#
-
-output "account_id" {
-  description = "An alpha-numeric value identifying the account ID."
-  value       = ibm_resource_instance.cos_instance.account_id
+output "dedicated_host_id" {
+  value = ibm_is_dedicated_host.dh_host.id
 }
 
-output "guid" {
-  description = "The GUID of the resource instance."
-  value       = ibm_resource_instance.cos_instance.account_id
-}
-
-output "id" {
-  description = "The unique identifier of the resource instance."
-  value       = ibm_resource_instance.cos_instance.id
-}
-
-output "crn" {
-  description = "The CRN of the resource instance."
-  value       = ibm_resource_instance.cos_instance.crn
+output "dedicated_host_group_id" {
+  value = ibm_is_dedicated_host_group.dh_group.id
 }
