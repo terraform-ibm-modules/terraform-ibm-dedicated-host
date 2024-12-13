@@ -13,9 +13,9 @@ output "resource_group_id" {
 }
 
 output "dedicated_host_id" {
-  value = ibm_is_dedicated_host.dh_host.id
+  value = module.dedicated_host.dedicated_host_id
 }
 
 output "dedicated_host_group_id" {
-  value = ibm_is_dedicated_host_group.dh_group.id
+  value = module.dedicated_host.dedicated_host_group_id
 }

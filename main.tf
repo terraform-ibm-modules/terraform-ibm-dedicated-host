@@ -3,7 +3,7 @@
 ################################################################
 
 resource "ibm_is_dedicated_host_group" "dh_group" {
-  name           = "${var.name}-dhgrp"
+  name           = "${var.prefix}"
   class          = var.class
   family         = var.family
   zone           = var.zone
@@ -11,8 +11,9 @@ resource "ibm_is_dedicated_host_group" "dh_group" {
 }
 
 resource "ibm_is_dedicated_host" "dh_host" {
-  name           = "${var.name}-dh"
+  name           = "${var.prefix}"
   profile        = var.profile
   host_group     = ibm_is_dedicated_host_group.dh_group.id
   resource_group = var.resource_group_id
+  access_tags    = var.resource_tags
 }
