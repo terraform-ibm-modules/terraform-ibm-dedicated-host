@@ -21,6 +21,18 @@ variable "resource_tags" {
   default = []
 }
 
+variable "dedicated_host_group" {
+  type = string
+  description = "Name of the existing dedicated host group, the dedicated host will be created on the give host group. If none given, a new dedicated host group will be created. "
+  default = null
+}
+
+variable "dedicated_host_count" {
+  description = "Number of dedicated hosts that has to be created."
+  type        = number
+  default     = 1
+}
+
 variable "zone" {
   description = "Zone where the instance will be created"
   type        = string

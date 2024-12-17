@@ -11,15 +11,16 @@ module "resource_group" {
 }
 
 ########################################################################################################################
-# Dedicated Host
+# Basic Example for Dedicated Host Module
 ########################################################################################################################
 
 module "dedicated_host" {
-  source            = "../.."
-  prefix            = var.prefix
-  family            = var.family
-  class             = var.class
-  profile           = var.profile
-  zone              = var.zone
-  resource_group_id = module.resource_group.resource_group_id
+  dedicated_host_count  = var.dedicated_host_count 
+  source                = "../.."
+  prefix                = var.prefix
+  family                = var.family
+  class                 = var.class
+  profile               = var.profile
+  zone                  = var.zone
+  resource_group_id     = module.resource_group.resource_group_id
 }
