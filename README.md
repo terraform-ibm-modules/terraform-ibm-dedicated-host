@@ -20,7 +20,7 @@ For information, see "Module names and descriptions" at
 https://terraform-ibm-modules.github.io/documentation/#/implementation-guidelines?id=module-names-and-descriptions
 -->
 
-TODO: Replace this with a description of the modules in this repo.
+The dedicated host module provisions dedicated host for creating multiple VSI's on a single host
 
 
 <!-- The following content is automatically populated by the pre-commit hook -->
