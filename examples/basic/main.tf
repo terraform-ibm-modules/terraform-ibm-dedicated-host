@@ -16,7 +16,7 @@ module "resource_group" {
 
 module "dedicated_host" {
   source = "../.."
-  prefix            = "basic-dhtest"
+  prefix = "basic-dhtest"
   dedicated_hosts_group = [
     {
       resource_group_id = "0808a9d6f8874342b7c4c07ad1666dc2"

@@ -6,7 +6,7 @@ Update status and "latest release" badges:
   1. For the status options, see https://terraform-ibm-modules.github.io/documentation/#/badge-status
   2. Update the "latest release" badge to point to the correct module's repo. Replace "terraform-ibm-module-template" in two places.
 -->
-[![Incubating (Not yet consumable)](https://img.shields.io/badge/status-Incubating%20(Not%20yet%20consumable)-red)](https://terraform-ibm-modules.github.io/documentation/#/badge-status)
+[![Stable (With quality checks)](https://img.shields.io/badge/Status-Stable%20(With%20quality%20checks)-green)](https://terraform-ibm-modules.github.io/documentation/#/badge-status)
 [![latest release](https://img.shields.io/github/v/release/terraform-ibm-modules/terraform-ibm-module-template?logo=GitHub&sort=semver)](https://github.com/terraform-ibm-modules/terraform-ibm-module-template/releases/latest)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovatebot.com/)
@@ -61,7 +61,7 @@ terraform {
   required_providers {
     ibm = {
       source  = "IBM-Cloud/ibm"
-      version = "X.Y.Z"  # Lock into a provider version that satisfies the module constraints
+      version = ">= 1.65.0, < 2.0.0"
     }
   }
 }
@@ -76,11 +76,23 @@ provider "ibm" {
 }
 
 module "module_template" {
-  source            = "terraform-ibm-modules/<replace>/ibm"
-  version           = "X.Y.Z" # Replace "X.Y.Z" with a release version to lock into a specific release
-  region            = local.region
-  name              = "instance-name"
-  resource_group_id = "xxXXxxXXxXxXXXXxxXxxxXXXXxXXXXX" # Replace with the actual ID of resource group to use
+  source            = "terraform-ibm-modules/dedicated-host/ibm"
+  version           = "X.X.X" # Replace "X.X.X" with a release version to lock into a specific release
+  prefix = "basic-dhtest"
+  dedicated_hosts_group = [
+    {
+      resource_group_id = "a8cff104f1764e98aac9ab879198230a" # pragma: allowlist secret
+      class             = "bx2"
+      family            = "balanced"
+      zone              = "us-south-1"
+      dedicated_hosts = [
+        {
+          profile     = "bx2-host-152x608"
+          access_tags = ["env:test"]
+        }
+      ]
+    }
+  ]
 }
 ```
 
@@ -118,48 +130,38 @@ statement instead the previous block.
 
 <!-- The following content is automatically populated by the pre-commit hook -->
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
-## Requirements
+### Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
 | <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >= 1.65.0, < 2.0.0 |
 
-## Providers
-
-| Name | Version |
-|------|---------|
-| <a name="provider_ibm"></a> [ibm](#provider\_ibm) | >= 1.65.0, < 2.0.0 |
-
-## Modules
+### Modules
 
 No modules.
 
-## Resources
+### Resources
 
 | Name | Type |
 |------|------|
 | [ibm_is_dedicated_host.dh_host](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_dedicated_host) | resource |
 | [ibm_is_dedicated_host_group.dh_group](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_dedicated_host_group) | resource |
+| [ibm_is_dedicated_host_group.existing_dh_group](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/is_dedicated_host_group) | data source |
 
-## Inputs
+### Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_class"></a> [class](#input\_class) | Profile class of the dedicated host, this has to be defined based on the VSI usage. Refer [Understanding DH Class](https://cloud.ibm.com/docs/vpc?topic=vpc-dh-profiles&interface=ui#:~:text=common%20use%20cases.-,Understanding%20profiles,-The%20following%20example) for more details | `string` | `"bx2"` | no |
-| <a name="input_family"></a> [family](#input\_family) | Family defines the purpose of the dedicated host, The dedicated host family can be defined from balanced,compute or memory. Refer [Understanding DH Profile family](https://cloud.ibm.com/docs/vpc?topic=vpc-dh-profiles&interface=ui#:~:text=%22b%22%3A%20balanced%20family,1%3A28%20ratio) for more details | `string` | `"balanced"` | no |
-| <a name="input_name"></a> [name](#input\_name) | Name of the dedicated host and dedicated host group | `string` | n/a | yes |
-| <a name="input_profile"></a> [profile](#input\_profile) | Profile for the dedicated hosts(size and resources). Refer [Understanding DH Profile](https://cloud.ibm.com/docs/vpc?topic=vpc-dh-profiles&interface=ui) for more details | `string` | `"bx2-host-152x608"` | no |
-| <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | The ID of the resource group where you want to create the service. | `string` | n/a | yes |
-| <a name="input_resource_tags"></a> [resource\_tags](#input\_resource\_tags) | List of resource tag to associate with the instance. | `list(string)` | `[]` | no |
-| <a name="input_zone"></a> [zone](#input\_zone) | Zone where the instance will be created | `string` | n/a | yes |
+| <a name="input_dedicated_hosts_group"></a> [dedicated\_hosts\_group](#input\_dedicated\_hosts\_group) | n/a | <pre>list(object({<br/>    host_group_name   = optional(string, null)<br/>    resource_group_id = string<br/>    class             = optional(string, "bx2")<br/>    family            = optional(string, "balanced")<br/>    zone              = optional(string, "us-south-1")<br/>    dedicated_hosts = list(object({<br/>      profile     = optional(string, "bx2-host-152x608")<br/>      access_tags = optional(list(string), [])<br/>    }))<br/>  }))</pre> | n/a | yes |
+| <a name="input_prefix"></a> [prefix](#input\_prefix) | Prefix for the dedicated host resources. | `string` | n/a | yes |
 
-## Outputs
+### Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_dedicated_host_group_id"></a> [dedicated\_host\_group\_id](#output\_dedicated\_host\_group\_id) | n/a |
-| <a name="output_dedicated_host_id"></a> [dedicated\_host\_id](#output\_dedicated\_host\_id) | n/a |
+| <a name="output_dedicated_host_group_ids"></a> [dedicated\_host\_group\_ids](#output\_dedicated\_host\_group\_ids) | Output for all dedicated host group IDs |
+| <a name="output_dedicated_host_ids"></a> [dedicated\_host\_ids](#output\_dedicated\_host\_ids) | Output for all dedicated host IDs |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 <!-- Leave this section as is so that your module has a link to local development environment set-up steps for contributors to follow -->

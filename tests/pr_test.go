@@ -9,7 +9,7 @@ import (
 )
 
 // Use existing resource group
-const resourceGroup = "HPCC"
+const resourceGroup = "geretain-test-resources"
 
 // Ensure every example directory has a corresponding test
 const advancedExampleDir = "examples/advanced"

@@ -4,8 +4,8 @@
 
 # Dedicated Host Group
 resource "ibm_is_dedicated_host_group" "dh_group" {
-  for_each = { 
-    for obj, group in var.dedicated_hosts_group : obj => group 
+  for_each = {
+    for obj, group in var.dedicated_hosts_group : obj => group
     if group.host_group_name == null
   }
 
