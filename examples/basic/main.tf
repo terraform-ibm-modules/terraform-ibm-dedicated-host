@@ -15,12 +15,20 @@ module "resource_group" {
 ########################################################################################################################
 
 module "dedicated_host" {
-  dedicated_host_count  = var.dedicated_host_count 
-  source                = "../.."
-  prefix                = var.prefix
-  family                = var.family
-  class                 = var.class
-  profile               = var.profile
-  zone                  = var.zone
-  resource_group_id     = module.resource_group.resource_group_id
+  source = "../.."
+  prefix            = "basic-dhtest"
+  dedicated_hosts_group = [
+    {
+      resource_group_id = "0808a9d6f8874342b7c4c07ad1666dc2"
+      class             = "bx2"
+      family            = "balanced"
+      zone              = "us-south-1"
+      dedicated_hosts = [
+        {
+          profile     = "bx2-host-152x608"
+          access_tags = ["env:test"]
+        }
+      ]
+    }
+  ]
 }

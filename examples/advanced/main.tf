@@ -11,18 +11,26 @@ module "resource_group" {
 }
 
 ########################################################################################################################
-#  Dedicated Host Module
+# Basic Example for Dedicated Host Module
 ########################################################################################################################
 
 module "dedicated_host" {
-  dedicated_host_count  = var.dedicated_host_count 
-  source                = "../.."
-  prefix                = var.prefix
-  family                = var.family
-  class                 = var.class
-  profile               = var.profile
-  zone                  = var.zone
-  resource_group_id     = module.resource_group.resource_group_id
+  source = "../.."
+  prefix            = "basic-dhtest"
+  dedicated_hosts_group = [
+    {
+      resource_group_id = "0808a9d6f8874342b7c4c07ad1666dc2"
+      class             = "bx2"
+      family            = "balanced"
+      zone              = "us-south-1"
+      dedicated_hosts = [
+        {
+          profile     = "bx2-host-152x608"
+          access_tags = ["env:test"]
+        }
+      ]
+    }
+  ]
 }
 
 ##############################################################################
@@ -96,6 +104,7 @@ module "slz_vsi" {
   vpc_id                     = module.slz_vpc.vpc_id
   prefix                     = var.prefix
   placement_group_id         = ibm_is_placement_group.placement_group.id
+#  dedicated_host_id          = module.dedicated_host.dedicated_host_group_ids
   machine_type               = var.machine_type
   user_data                  = var.user_data
   boot_volume_encryption_key = var.boot_volume_encryption_key

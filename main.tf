@@ -1,5 +1,5 @@
 ################################################################
-##   Root Module for Dedicated host and Dedicated Host Group  ##
+##   Root Module for Dedicated Host Group                     ##
 ################################################################
 
 # Dedicated Host Group
@@ -16,6 +16,10 @@ resource "ibm_is_dedicated_host_group" "dh_group" {
   resource_group = each.value.resource_group_id
 }
 
+################################################################
+
+################################################################
+##   Data Block for finding Existing Dedicated Host Group     ##
 ################################################################
 
 data "ibm_is_dedicated_host_group" "existing_dh_group" {
@@ -43,7 +47,12 @@ locals {
   ])
 }
 
-# Dedicated Hosts
+################################################################
+
+################################################################
+##           Root Module for Dedicated Host                   ##
+################################################################
+
 resource "ibm_is_dedicated_host" "dh_host" {
   for_each = { for item in local.flattened_hosts : item.key => item }
 
