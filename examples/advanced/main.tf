@@ -16,17 +16,18 @@ module "resource_group" {
 
 module "dedicated_host" {
   source = "../.."
-  prefix = "basic-dhtest"
   dedicated_hosts_group = [
     {
-      resource_group_id = "0808a9d6f8874342b7c4c07ad1666dc2"
-      class             = "bx2"
-      family            = "balanced"
-      zone              = "us-south-1"
-      dedicated_hosts = [
+      host_group_name     = "basic-dhgroup"
+      existing_host_group = false
+      resource_group_id   = "0808a9d6f8874342b7c4c07ad1666dc2"
+      class               = "bx2"
+      family              = "balanced"
+      zone                = "us-south-1"
+      dedicated_hosts     = [
         {
-          profile     = "bx2-host-152x608"
-          access_tags = ["env:test"]
+          name          = "basic-dhhost"
+          profile       = "bx2-host-152x608"
         }
       ]
     }

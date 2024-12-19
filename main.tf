@@ -6,10 +6,10 @@
 resource "ibm_is_dedicated_host_group" "dh_group" {
   for_each = {
     for obj, group in var.dedicated_hosts_group : obj => group
-    if group.host_group_name == null
+    if group.existing_host_group == false
   }
 
-  name           = each.value.host_group_name != null ? each.value.host_group_name : "${var.prefix}"
+  name           = each.value.host_group_name
   class          = each.value.class
   family         = each.value.family
   zone           = each.value.zone
@@ -24,9 +24,9 @@ resource "ibm_is_dedicated_host_group" "dh_group" {
 
 data "ibm_is_dedicated_host_group" "existing_dh_group" {
   for_each = {
-    for group_idx, group in var.dedicated_hosts_group :
-    group_idx => group
-    if group.host_group_name != null
+    for group_obj, group in var.dedicated_hosts_group :
+    group_obj => group
+    if group.existing_host_group == true
   }
 
   name = each.value.host_group_name
@@ -37,9 +37,9 @@ locals {
     for group_obj, group in var.dedicated_hosts_group : [
       for host_obj, host in group.dedicated_hosts : {
         key               = "${group_obj}-${host_obj}"
-        name              = "${var.prefix}"
+        name              = host.name
         profile           = host.profile
-        host_group_id     = group.host_group_name != null ? data.ibm_is_dedicated_host_group.existing_dh_group[group_obj].id : ibm_is_dedicated_host_group.dh_group[group_obj].id
+        host_group_id     = group.group.existing_host_group ? data.ibm_is_dedicated_host_group.existing_dh_group[group_obj].id : ibm_is_dedicated_host_group.dh_group[group_obj].id
         resource_group_id = group.resource_group_id
         access_tags       = host.access_tags
       }
