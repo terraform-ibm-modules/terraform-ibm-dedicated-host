@@ -39,7 +39,7 @@ locals {
         key               = "${group_obj}-${host_obj}"
         name              = host.name
         profile           = host.profile
-        host_group_id     = group.group.existing_host_group ? data.ibm_is_dedicated_host_group.existing_dh_group[group_obj].id : ibm_is_dedicated_host_group.dh_group[group_obj].id
+        host_group_id     = group.existing_host_group ? data.ibm_is_dedicated_host_group.existing_dh_group[group_obj].id : ibm_is_dedicated_host_group.dh_group[group_obj].id
         resource_group_id = group.resource_group_id
         access_tags       = host.access_tags
       }

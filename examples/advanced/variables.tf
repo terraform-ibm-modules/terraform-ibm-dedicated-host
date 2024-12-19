@@ -28,7 +28,7 @@ variable "resource_group" {
 
 variable "prefix" {
   type        = string
-  description = "Name of the dedicated host resources"
+  description = "Name of the VSI resources"
   default     = "dh-test"
 }
 

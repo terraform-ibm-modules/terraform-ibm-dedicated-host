@@ -24,10 +24,10 @@ module "dedicated_host" {
       class               = "bx2"
       family              = "balanced"
       zone                = "us-south-1"
-      dedicated_hosts     = [
+      dedicated_hosts = [
         {
-          name          = "basic-dhhost"
-          profile       = "bx2-host-152x608"
+          name    = "basic-dhhost"
+          profile = "bx2-host-152x608"
         }
       ]
     }

@@ -153,15 +153,14 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_dedicated_hosts_group"></a> [dedicated\_hosts\_group](#input\_dedicated\_hosts\_group) | n/a | <pre>list(object({<br/>    host_group_name   = optional(string, null)<br/>    resource_group_id = string<br/>    class             = optional(string, "bx2")<br/>    family            = optional(string, "balanced")<br/>    zone              = optional(string, "us-south-1")<br/>    dedicated_hosts = list(object({<br/>      profile     = optional(string, "bx2-host-152x608")<br/>      access_tags = optional(list(string), [])<br/>    }))<br/>  }))</pre> | n/a | yes |
-| <a name="input_prefix"></a> [prefix](#input\_prefix) | Prefix for the dedicated host resources. | `string` | n/a | yes |
+| <a name="input_dedicated_hosts_group"></a> [dedicated\_hosts\_group](#input\_dedicated\_hosts\_group) | A list of objects which contain the required inputs for the dedicated host and dedicated host groups, a flag indicating the user to use an existing host group by enabling it. Also has the default values for a dedicated host setup which are recommended by IBM Cloud. | <pre>list(object({<br/>    host_group_name     = string<br/>    existing_host_group = optional(bool, false)<br/>    resource_group_id   = string<br/>    class               = optional(string, "bx2")<br/>    family              = optional(string, "balanced")<br/>    zone                = optional(string, "us-south-1")<br/>    dedicated_hosts = list(object({<br/>      name        = string<br/>      profile     = optional(string, "bx2-host-152x608")<br/>      access_tags = optional(list(string), [])<br/>    }))<br/>  }))</pre> | `[]` | no |
 
 ### Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_dedicated_host_group_ids"></a> [dedicated\_host\_group\_ids](#output\_dedicated\_host\_group\_ids) | Output for all dedicated host group IDs |
-| <a name="output_dedicated_host_ids"></a> [dedicated\_host\_ids](#output\_dedicated\_host\_ids) | Output for all dedicated host IDs |
+| <a name="output_dedicated_host_group_ids"></a> [dedicated\_host\_group\_ids](#output\_dedicated\_host\_group\_ids) | List the Dedicated Host Group ID's |
+| <a name="output_dedicated_host_ids"></a> [dedicated\_host\_ids](#output\_dedicated\_host\_ids) | List the Dedicated Host ID's |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 <!-- Leave this section as is so that your module has a link to local development environment set-up steps for contributors to follow -->

@@ -9,7 +9,7 @@ import (
 )
 
 // Use existing resource group
-const resourceGroup = "geretain-test-resources"
+const resourceGroup = "HPCC"
 
 // Ensure every example directory has a corresponding test
 const advancedExampleDir = "examples/advanced"
@@ -23,9 +23,6 @@ func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptio
 		Prefix:        prefix,
 		ResourceGroup: resourceGroup,
 		Region:        region,
-		TerraformVars: map[string]interface{}{
-			"zone": "us-south-1",
-		},
 	})
 	return options
 }
