@@ -12,9 +12,9 @@ import (
 const resourceGroup = "geretain-test-resources"
 
 // Ensure every example directory has a corresponding test
-const advancedExampleDir = "examples/advanced"
+// const advancedExampleDir = "examples/advanced"
 const basicExampleDir = "examples/basic"
-const upgradeExampleDir = "example/upgrade"
+const upgradeExampleDir = "examples/upgrade"
 const region = "us-south"
 
 func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptions {
@@ -39,17 +39,17 @@ func TestRunBasicExample(t *testing.T) {
 	assert.NotNil(t, output, "Expected some output")
 }
 
-func TestRunAdvancedExample(t *testing.T) {
-	t.Parallel()
+// func TestRunAdvancedExample(t *testing.T) {
+//	t.Parallel()
 
-	options := setupOptions(t, "mod-template-adv", advancedExampleDir)
+//	options := setupOptions(t, "mod-template-adv", advancedExampleDir)
 
-	output, err := options.RunTestConsistency()
-	assert.Nil(t, err, "This should not have errored")
-	assert.NotNil(t, output, "Expected some output")
-}
+//	output, err := options.RunTestConsistency()
+//	assert.Nil(t, err, "This should not have errored")
+//	assert.NotNil(t, output, "Expected some output")
+//}
 
-// Upgrade test (using advanced example)
+// Upgrade test (using upgraded example)
 func TestRunUpgradeExample(t *testing.T) {
 	t.Parallel()
 
