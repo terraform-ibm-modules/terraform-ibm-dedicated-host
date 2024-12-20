@@ -4,7 +4,10 @@
 
 # Output for all dedicated host group IDs
 output "dedicated_host_group_ids" {
-  value       = { for item in local.flattened_hosts : item.key => item.host_group_id }
+  value = {
+    for item in local.flattened_hosts :
+    item.key => item.host_group_id...
+  }
   description = "List the Dedicated Host Group ID's"
 }
 

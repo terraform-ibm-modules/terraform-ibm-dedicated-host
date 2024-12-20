@@ -1,59 +1,28 @@
 <!-- Update this title with a descriptive name. Use sentence case. -->
 # IBM Dedicated Host Module
 
-<!--
-Update status and "latest release" badges:
-  1. For the status options, see https://terraform-ibm-modules.github.io/documentation/#/badge-status
-  2. Update the "latest release" badge to point to the correct module's repo. Replace "terraform-ibm-module-template" in two places.
--->
 [![Stable (With quality checks)](https://img.shields.io/badge/Status-Stable%20(With%20quality%20checks)-green)](https://terraform-ibm-modules.github.io/documentation/#/badge-status)
 [![latest release](https://img.shields.io/github/v/release/terraform-ibm-modules/terraform-ibm-module-template?logo=GitHub&sort=semver)](https://github.com/terraform-ibm-modules/terraform-ibm-module-template/releases/latest)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovatebot.com/)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
-<!--
-Add a description of modules in this repo.
-Expand on the repo short description in the .github/settings.yml file.
 
-For information, see "Module names and descriptions" at
-https://terraform-ibm-modules.github.io/documentation/#/implementation-guidelines?id=module-names-and-descriptions
--->
+This module used to provision dedicated Host which is a fully dedicated, single-tenant physical server hosted in IBM Cloud data centers. It is designed for enterprises that require strict isolation of workloads, enhanced security, and consistent performance. With a dedicated host, customers have full control over server allocation, resource usage, and compliance requirements while leveraging the scalability and reliability of the IBM Cloud.
 
-The dedicated host module provisions dedicated host for creating multiple VSI's on a single host
-
-
-<!-- The following content is automatically populated by the pre-commit hook -->
 <!-- BEGIN OVERVIEW HOOK -->
 ## Overview
 * [terraform-ibm-dedicated-host](#terraform-ibm-dedicated-host)
 * [Examples](./examples)
     * [Advanced example](./examples/advanced)
     * [Basic example](./examples/basic)
+    * [Upgraded example](./examples/upgrade)
 * [Contributing](#contributing)
 <!-- END OVERVIEW HOOK -->
 
-
-<!--
-If this repo contains any reference architectures, uncomment the heading below and link to them.
-(Usually in the `/reference-architectures` directory.)
-See "Reference architecture" in the public documentation at
-https://terraform-ibm-modules.github.io/documentation/#/implementation-guidelines?id=reference-architecture
--->
-<!-- ## Reference architectures -->
-
-
-<!-- Replace this heading with the name of the root level module (the repo name) -->
 ## terraform-ibm-dedicated-host
 
 ### Usage
-
-<!--
-Add an example of the use of the module in the following code block.
-
-Use real values instead of "var.<var_name>" or other placeholder values
-unless real values don't help users know what to change.
--->
 
 ```hcl
 terraform {
@@ -78,17 +47,20 @@ provider "ibm" {
 module "module_template" {
   source            = "terraform-ibm-modules/dedicated-host/ibm"
   version           = "X.X.X" # Replace "X.X.X" with a release version to lock into a specific release
-  prefix = "basic-dhtest"
-  dedicated_hosts_group = [
+  prefix = "dhtest"
+  dedicated_hosts = [
     {
-      resource_group_id = "a8cff104f1764e98aac9ab879198230a" # pragma: allowlist secret
-      class             = "bx2"
-      family            = "balanced"
-      zone              = "us-south-1"
-      dedicated_hosts = [
+      host_group_name     = "${var.prefix}-dhgroup"
+      existing_host_group = false
+      resource_group_id   = module.resource_group.resource_group_id
+      class               = "bx2"
+      family              = "balanced"
+      zone                = "${var.region}-1"
+      resource_tags       = var.resource_tags
+      dedicated_host = [
         {
-          profile     = "bx2-host-152x608"
-          access_tags = ["env:test"]
+          name    = "${var.prefix}-dhhost"
+          profile = "bx2-host-152x608"
         }
       ]
     }
@@ -96,39 +68,24 @@ module "module_template" {
 }
 ```
 
-### Required access policies
+### Required IAM access policies
 
-<!-- PERMISSIONS REQUIRED TO RUN MODULE
-If this module requires permissions, uncomment the following block and update
-the sample permissions, following the format.
-Replace the 'Sample IBM Cloud' service and roles with applicable values.
-The required information can usually be found in the services official
-IBM Cloud documentation.
-To view all available service permissions, you can go in the
-console at Manage > Access (IAM) > Access groups and click into an existing group
-(or create a new one) and in the 'Access' tab click 'Assign access'.
--->
+You need the following permissions to run this module.
 
-<!--
-You need the following permissions to run this module:
-
-- Service
-    - **Resource group only**
-        - `Viewer` access on the specific resource group
-    - **Sample IBM Cloud** service
+- Account Management
+    - **Resource Group** service
+        - `Viewer` platform access
+- IAM Services
+    - **IBM Cloud Activity Tracker** service
         - `Editor` platform access
         - `Manager` service access
--->
+    - **IBM Cloud Monitoring** service
+        - `Editor` platform access
+        - `Manager` service access
+    - **IBM Cloud Object Storage** service
+        - `Editor` platform access
+        - `Manager` service access
 
-<!-- NO PERMISSIONS FOR MODULE
-If no permissions are required for the module, uncomment the following
-statement instead the previous block.
--->
-
-<!-- No permissions are needed to run this module.-->
-
-
-<!-- The following content is automatically populated by the pre-commit hook -->
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ### Requirements
 
@@ -153,7 +110,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_dedicated_hosts_group"></a> [dedicated\_hosts\_group](#input\_dedicated\_hosts\_group) | A list of objects which contain the required inputs for the dedicated host and dedicated host groups, a flag indicating the user to use an existing host group by enabling it. Also has the default values for a dedicated host setup which are recommended by IBM Cloud. | <pre>list(object({<br/>    host_group_name     = string<br/>    existing_host_group = optional(bool, false)<br/>    resource_group_id   = string<br/>    class               = optional(string, "bx2")<br/>    family              = optional(string, "balanced")<br/>    zone                = optional(string, "us-south-1")<br/>    dedicated_hosts = list(object({<br/>      name        = string<br/>      profile     = optional(string, "bx2-host-152x608")<br/>      access_tags = optional(list(string), [])<br/>    }))<br/>  }))</pre> | `[]` | no |
+| <a name="input_dedicated_hosts"></a> [dedicated\_hosts](#input\_dedicated\_hosts) | A list of objects which contain the required inputs for the dedicated host and dedicated host groups, a flag indicating the user to use an existing host group by enabling it. Also has the default values for a dedicated host setup which are recommended by IBM Cloud. | <pre>list(object({<br/>    host_group_name     = string<br/>    existing_host_group = optional(bool, false)<br/>    resource_group_id   = string<br/>    class               = optional(string, "bx2")<br/>    family              = optional(string, "balanced")<br/>    zone                = optional(string, "us-south-1")<br/>    dedicated_host = list(object({<br/>      name        = string<br/>      profile     = optional(string, "bx2-host-152x608")<br/>      access_tags = optional(list(string), [])<br/>    }))<br/>  }))</pre> | n/a | yes |
 
 ### Outputs
 

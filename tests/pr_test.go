@@ -9,11 +9,12 @@ import (
 )
 
 // Use existing resource group
-const resourceGroup = "HPCC"
+const resourceGroup = "geretain-test-resources"
 
 // Ensure every example directory has a corresponding test
 const advancedExampleDir = "examples/advanced"
 const basicExampleDir = "examples/basic"
+const upgradeExampleDir = "example/upgrade"
 const region = "us-south"
 
 func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptions {
@@ -52,7 +53,7 @@ func TestRunAdvancedExample(t *testing.T) {
 func TestRunUpgradeExample(t *testing.T) {
 	t.Parallel()
 
-	options := setupOptions(t, "mod-template-adv-upg", advancedExampleDir)
+	options := setupOptions(t, "mod-template-adv-upg", upgradeExampleDir)
 
 	output, err := options.RunTestUpgrade()
 	if !options.UpgradeTestSkipped {

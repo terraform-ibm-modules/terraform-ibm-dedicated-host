@@ -1,5 +1,5 @@
 ########################################################################################################################
-# Input Variables
+# Dedicated Host Input Variables
 ########################################################################################################################
 
 variable "ibmcloud_api_key" {
@@ -13,121 +13,18 @@ variable "region" {
   description = "Region to provision all resources created by this example."
 }
 
-########################################################################################################################
-# Dedicated Host Input Variables
-########################################################################################################################
-
-variable "resource_group" {
-  type        = string
-  description = "The name of the resource group where you want to create the service."
-}
-
-########################################################################################################################
-# VSI Input Variables
-########################################################################################################################
-
 variable "prefix" {
   type        = string
-  description = "Name of the VSI resources"
-  default     = "dh-test"
+  description = "Name of the resources"
 }
 
 variable "resource_tags" {
   type        = list(string)
-  description = "A list of access tags to apply to the VSI resources created by the module."
+  description = "A list of access tags to apply to the resources created by the module."
   default     = []
 }
 
-variable "access_tags" {
-  type        = list(string)
-  description = "A list of access tags to apply to the VSI resources created by the module. For more information, see https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial."
-  default     = []
-
-  validation {
-    condition = alltrue([
-      for tag in var.access_tags : can(regex("[\\w\\-_\\.]+:[\\w\\-_\\.]+", tag)) && length(tag) <= 128
-    ])
-    error_message = "Tags must match the regular expression \"[\\w\\-_\\.]+:[\\w\\-_\\.]+\". For more information, see https://cloud.ibm.com/docs/account?topic=account-tag&interface=ui#limits."
-  }
-}
-
-variable "image_id" {
-  description = "Image ID used for VSI. Run 'ibmcloud is images' to find available images. Be aware that region is important for the image since the id's are different in each region."
+variable "resource_group" {
   type        = string
-  default     = "r006-ec03e14e-6336-4fe6-ba4f-460e266c6b10"
-}
-
-variable "machine_type" {
-  description = "VSI machine type"
-  type        = string
-  default     = "cx2-2x4"
-}
-
-variable "create_security_group" {
-  description = "Create security group for VSI"
-  type        = string
-  default     = false
-}
-
-variable "security_group" {
-  description = "Security group created for VSI"
-  type = object({
-    name = string
-    rules = list(
-      object({
-        name      = string
-        direction = string
-        source    = string
-        tcp = optional(
-          object({
-            port_max = number
-            port_min = number
-          })
-        )
-        udp = optional(
-          object({
-            port_max = number
-            port_min = number
-          })
-        )
-        icmp = optional(
-          object({
-            type = number
-            code = number
-          })
-        )
-      })
-    )
-  })
-  default = null
-}
-
-variable "user_data" {
-  description = "User data to initialize VSI deployment"
-  type        = string
-  default     = null
-}
-
-variable "boot_volume_encryption_key" {
-  description = "CRN of boot volume encryption key"
-  type        = string
-  default     = null
-}
-
-variable "vsi_per_subnet" {
-  description = "Number of VSI instances for each subnet"
-  type        = number
-  default     = 1
-}
-
-variable "ssh_key" {
-  type        = string
-  description = "An existing ssh key name to use for this example, if unset a new ssh key will be created"
-  default     = null
-}
-
-variable "vpc_name" {
-  type        = string
-  description = "Name for VPC"
-  default     = "vpc"
+  description = "The name of the resource group where you want to create the service."
 }
