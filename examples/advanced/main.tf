@@ -23,7 +23,7 @@ module "dedicated_host" {
       resource_group_id   = module.resource_group.resource_group_id
       class               = "bx2"
       family              = "balanced"
-      zone                = "${var.region}-1"
+      zone                = "us-south-1"
       resource_tags       = var.resource_tags
       dedicated_host = [
         {
@@ -38,12 +38,42 @@ module "dedicated_host" {
       resource_group_id   = module.resource_group.resource_group_id
       class               = "bx2"
       family              = "balanced"
-      zone                = "${var.region}-1"
+      zone                = "us-south-1"
       resource_tags       = var.resource_tags
       dedicated_host = [
         {
           name    = "${var.prefix}-dhhost-2"
+          profile = "bx2d-host-152x608"
+        }
+      ]
+    },
+    {
+      host_group_name     = "${var.prefix}-dhgroup"
+      existing_host_group = false
+      resource_group_id   = module.resource_group.resource_group_id
+      class               = "bx2"
+      family              = "balanced"
+      zone                = "eu-es-1"
+      resource_tags       = var.resource_tags
+      dedicated_host = [
+        {
+          name    = "${var.prefix}-dhhost-1"
           profile = "bx2-host-152x608"
+        }
+      ]
+    },
+    {
+      host_group_name     = "${var.prefix}-dhgroup"
+      existing_host_group = true
+      resource_group_id   = module.resource_group.resource_group_id
+      class               = "bx2"
+      family              = "balanced"
+      zone                = "eu-es-1"
+      resource_tags       = var.resource_tags
+      dedicated_host = [
+        {
+          name    = "${var.prefix}-dhhost-2"
+          profile = "bx2d-host-152x608"
         }
       ]
     }

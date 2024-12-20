@@ -24,13 +24,13 @@ resource "ibm_is_dedicated_host_group" "dh_group" {
 
 data "ibm_is_dedicated_host_group" "existing_dh_group" {
   for_each = {
-    for idx, group in var.dedicated_hosts : "${group.host_group_name}-${idx}" => group
+    for group in var.dedicated_hosts : group.host_group_name => group
+    if group.existing_host_group == true
   }
+
   name = each.value.host_group_name
-  depends_on = [
-    ibm_is_dedicated_host_group.dh_group
-  ]
 }
+
 
 ################################################################
 
@@ -40,12 +40,12 @@ data "ibm_is_dedicated_host_group" "existing_dh_group" {
 
 locals {
   flattened_hosts = flatten([
-    for group_obj, group in var.dedicated_hosts : [
-      for host_obj, host in group.dedicated_host : {
+    for group in var.dedicated_hosts : [
+      for host in group.dedicated_host : {
         key               = group.host_group_name
         name              = host.name
         profile           = host.profile
-        host_group_id     = group.existing_host_group ? data.ibm_is_dedicated_host_group.existing_dh_group["${group.host_group_name}-${group_obj}"].id : ibm_is_dedicated_host_group.dh_group[group.host_group_name].id
+        host_group_id     = group.existing_host_group ? data.ibm_is_dedicated_host_group.existing_dh_group[group.host_group_name].id : ibm_is_dedicated_host_group.dh_group[group.host_group_name].id
         resource_group_id = group.resource_group_id
         access_tags       = host.access_tags
       }
