@@ -21,3 +21,13 @@ output "dedicated_host_group_id" {
   value       = module.dedicated_host.dedicated_host_group_ids
   description = "List the Dedicated Host Group ID's"
 }
+
+output "slz_vpc" {
+  value       = module.slz_vpc
+  description = "VPC module values"
+}
+
+output "slz_vsi" {
+  value       = module.slz_vsi
+  description = "VSI module values"
+}

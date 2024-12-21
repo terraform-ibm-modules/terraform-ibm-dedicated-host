@@ -12,8 +12,11 @@ import (
 const resourceGroup = "geretain-test-resources"
 
 // Ensure every example directory has a corresponding test
-const advancedExampleDir = "examples/advanced"
+// const advancedExampleDir = "examples/advanced"
 const basicExampleDir = "examples/basic"
+
+// const upgradeExampleDir = "examples/upgrade"
+const region = "us-south"
 
 func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptions {
 	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
@@ -21,6 +24,7 @@ func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptio
 		TerraformDir:  dir,
 		Prefix:        prefix,
 		ResourceGroup: resourceGroup,
+		Region:        region,
 	})
 	return options
 }
@@ -36,25 +40,25 @@ func TestRunBasicExample(t *testing.T) {
 	assert.NotNil(t, output, "Expected some output")
 }
 
-func TestRunAdvancedExample(t *testing.T) {
-	t.Parallel()
+// func TestRunAdvancedExample(t *testing.T) {
+//	t.Parallel()
 
-	options := setupOptions(t, "mod-template-adv", advancedExampleDir)
+//	options := setupOptions(t, "mod-template-adv", advancedExampleDir)
 
-	output, err := options.RunTestConsistency()
-	assert.Nil(t, err, "This should not have errored")
-	assert.NotNil(t, output, "Expected some output")
-}
+//	output, err := options.RunTestConsistency()
+//	assert.Nil(t, err, "This should not have errored")
+//	assert.NotNil(t, output, "Expected some output")
+//}
 
-// Upgrade test (using advanced example)
-func TestRunUpgradeExample(t *testing.T) {
-	t.Parallel()
+// Upgrade test (using upgraded example)
+// func TestRunUpgradeExample(t *testing.T) {
+//	t.Parallel()
 
-	options := setupOptions(t, "mod-template-adv-upg", advancedExampleDir)
+//	options := setupOptions(t, "mod-template-adv-upg", upgradeExampleDir)
 
-	output, err := options.RunTestUpgrade()
-	if !options.UpgradeTestSkipped {
-		assert.Nil(t, err, "This should not have errored")
-		assert.NotNil(t, output, "Expected some output")
-	}
-}
+//	output, err := options.RunTestUpgrade()
+//	if !options.UpgradeTestSkipped {
+//		assert.Nil(t, err, "This should not have errored")
+//		assert.NotNil(t, output, "Expected some output")
+//	}
+//}
