@@ -4,11 +4,11 @@
 
 # Dedicated Host Group
 resource "ibm_is_dedicated_host_group" "dh_group" {
-  for_each = tomap({
+  for_each = {
     for group in var.dedicated_hosts :
-    "${group.host_group_name}-${group.zone}-${group.resource_group_id}-new" => group
+    group.host_group_name => group
     if group.existing_host_group == false
-  })
+  }
 
   name           = each.value.host_group_name
   class          = each.value.class
@@ -17,7 +17,6 @@ resource "ibm_is_dedicated_host_group" "dh_group" {
   resource_group = each.value.resource_group_id
 }
 
-
 ################################################################
 
 ################################################################
@@ -25,15 +24,14 @@ resource "ibm_is_dedicated_host_group" "dh_group" {
 ################################################################
 
 data "ibm_is_dedicated_host_group" "existing_dh_group" {
-  for_each = tomap({
+  for_each = {
     for group in var.dedicated_hosts :
-    "${group.host_group_name}-${group.zone}-${group.resource_group_id}-existing" => group
+    group.host_group_name => group
     if group.existing_host_group == true
-  })
+  }
 
   name = each.value.host_group_name
 }
-
 
 ################################################################
 
@@ -48,15 +46,13 @@ locals {
         key               = group.host_group_name
         name              = host.name
         profile           = host.profile
-        host_group_id     = group.existing_host_group ? data.ibm_is_dedicated_host_group.existing_dh_group["${group.host_group_name}-${group.zone}-${group.resource_group_id}-existing"].id : ibm_is_dedicated_host_group.dh_group["${group.host_group_name}-${group.zone}-${group.resource_group_id}-new"].id
+        host_group_id     = group.existing_host_group ? data.ibm_is_dedicated_host_group.existing_dh_group[group.host_group_name].id : ibm_is_dedicated_host_group.dh_group[group.host_group_name].id
         resource_group_id = group.resource_group_id
         access_tags       = host.access_tags
       }
     ]
   ])
 }
-
-
 
 ################################################################
 
