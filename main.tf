@@ -4,10 +4,11 @@
 
 # Dedicated Host Group
 resource "ibm_is_dedicated_host_group" "dh_group" {
-  for_each = {
-    for obj, group in var.dedicated_hosts : group.host_group_name => group
+  for_each = tomap({
+    for group in var.dedicated_hosts :
+    "${group.host_group_name}-${group.existing_host_group ? "existing" : "new"}" => group
     if group.existing_host_group == false
-  }
+  })
 
   name           = each.value.host_group_name
   class          = each.value.class
@@ -15,6 +16,7 @@ resource "ibm_is_dedicated_host_group" "dh_group" {
   zone           = each.value.zone
   resource_group = each.value.resource_group_id
 }
+
 
 ################################################################
 
@@ -25,7 +27,7 @@ resource "ibm_is_dedicated_host_group" "dh_group" {
 data "ibm_is_dedicated_host_group" "existing_dh_group" {
   for_each = tomap({
     for group in var.dedicated_hosts :
-    group.host_group_name => group
+    "${group.host_group_name}-${group.existing_host_group ? "existing" : "new"}" => group
     if group.existing_host_group == true
   })
 
@@ -46,13 +48,14 @@ locals {
         key               = group.host_group_name
         name              = host.name
         profile           = host.profile
-        host_group_id     = group.existing_host_group ? data.ibm_is_dedicated_host_group.existing_dh_group[group.host_group_name].id : ibm_is_dedicated_host_group.dh_group[group.host_group_name].id
+        host_group_id     = group.existing_host_group ? data.ibm_is_dedicated_host_group.existing_dh_group["${group.host_group_name}-existing"].id : ibm_is_dedicated_host_group.dh_group["${group.host_group_name}-new"].id
         resource_group_id = group.resource_group_id
         access_tags       = host.access_tags
       }
     ]
   ])
 }
+
 
 ################################################################
 
