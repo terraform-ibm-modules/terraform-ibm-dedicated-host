@@ -2,11 +2,26 @@
 ##   Root Module for Dedicated Host Group                     ##
 ################################################################
 
+locals {
+  all_dh_groups = {
+    for group in var.dedicated_hosts :
+    "${group.host_group_name}-${group.zone}" => {
+      host_group_name     = group.host_group_name
+      existing_host_group = group.existing_host_group
+      resource_group_id   = group.resource_group_id
+      class               = group.class
+      family              = group.family
+      zone                = group.zone
+    }
+  }
+}
+
+
 # Dedicated Host Group
 resource "ibm_is_dedicated_host_group" "dh_group" {
   for_each = {
-    for group in var.dedicated_hosts :
-    group.host_group_name => group
+    for key, group in local.all_dh_groups :
+    key => group
     if group.existing_host_group == false
   }
 
@@ -25,9 +40,9 @@ resource "ibm_is_dedicated_host_group" "dh_group" {
 
 data "ibm_is_dedicated_host_group" "existing_dh_group" {
   for_each = {
-    for ext_group in var.dedicated_hosts :
-    ext_group.host_group_name => ext_group
-    if ext_group.existing_host_group == true
+    for key, group in local.all_dh_groups :
+    key => group
+    if group.existing_host_group == true
   }
 
   name = each.value.host_group_name
@@ -46,7 +61,7 @@ locals {
         key               = group.host_group_name
         name              = host.name
         profile           = host.profile
-        host_group_id     = group.existing_host_group ? data.ibm_is_dedicated_host_group.existing_dh_group[group.host_group_name].id : ibm_is_dedicated_host_group.dh_group[group.host_group_name].id
+        host_group_id     = group.existing_host_group ? data.ibm_is_dedicated_host_group.existing_dh_group["${group.host_group_name}-${group.zone}"].id : ibm_is_dedicated_host_group.dh_group["${group.host_group_name}-${group.zone}"].id
         resource_group_id = group.resource_group_id
         access_tags       = host.access_tags
       }
