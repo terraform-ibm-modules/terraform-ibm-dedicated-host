@@ -6,7 +6,7 @@
 resource "ibm_is_dedicated_host_group" "dh_group" {
   for_each = {
     for group in var.dedicated_hosts :
-    group.host_group_name => group...
+    group.host_group_name => group
     if group.existing_host_group == false
   }
 
@@ -25,9 +25,9 @@ resource "ibm_is_dedicated_host_group" "dh_group" {
 
 data "ibm_is_dedicated_host_group" "existing_dh_group" {
   for_each = {
-    for group in var.dedicated_hosts :
-    group.host_group_name => group...
-    if group.existing_host_group == true
+    for ext_group in var.dedicated_hosts :
+    ext_group.host_group_name => ext_group
+    if ext_group.existing_host_group == true
   }
 
   name = each.value.host_group_name
