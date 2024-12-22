@@ -3,29 +3,32 @@
 ################################################################
 
 locals {
-  all_dh_groups = {
-    for group in var.dedicated_hosts :
-    "${group.host_group_name}-${group.zone}" => {
-      host_group_name     = group.host_group_name
-      existing_host_group = group.existing_host_group
-      resource_group_id   = group.resource_group_id
-      class               = group.class
-      family              = group.family
-      zone                = group.zone
-    }
-  }
+  flattened_group_hosts = flatten([
+    for group in var.dedicated_hosts : [
+      for host in group.dedicated_host : {
+        groupname           = group.host_group_name
+        existing_host_group = group.existing_host_group
+        hostname            = host.name
+        class               = group.class
+        family              = group.family
+        zone                = group.zone
+        profile             = host.profile
+        resource_group_id   = group.resource_group_id
+      }
+    ]
+  ])
 }
 
 
 # Dedicated Host Group
 resource "ibm_is_dedicated_host_group" "dh_group" {
   for_each = {
-    for key, group in local.all_dh_groups :
-    key => group
-    if group.existing_host_group == false
+    for item in local.flattened_group_hosts :
+    "${item.groupname}-${item.hostname}" => item
+    if item.existing_host_group == false
   }
 
-  name           = each.value.host_group_name
+  name           = each.value.groupname
   class          = each.value.class
   family         = each.value.family
   zone           = each.value.zone
@@ -40,12 +43,12 @@ resource "ibm_is_dedicated_host_group" "dh_group" {
 
 data "ibm_is_dedicated_host_group" "existing_dh_group" {
   for_each = {
-    for key, group in local.all_dh_groups :
-    key => group
-    if group.existing_host_group == true
+    for item in local.flattened_group_hosts :
+    "${item.groupname}-${item.hostname}" => item
+    if item.existing_host_group == true
   }
 
-  name = each.value.host_group_name
+  name = each.value.groupname
 }
 
 ################################################################
@@ -61,7 +64,7 @@ locals {
         key               = group.host_group_name
         name              = host.name
         profile           = host.profile
-        host_group_id     = group.existing_host_group ? data.ibm_is_dedicated_host_group.existing_dh_group["${group.host_group_name}-${group.zone}"].id : ibm_is_dedicated_host_group.dh_group["${group.host_group_name}-${group.zone}"].id
+        host_group_id     = group.existing_host_group ? data.ibm_is_dedicated_host_group.existing_dh_group["${group.host_group_name}-${host.name}"].id : ibm_is_dedicated_host_group.dh_group["${group.host_group_name}-${host.name}"].id
         resource_group_id = group.resource_group_id
         access_tags       = host.access_tags
       }

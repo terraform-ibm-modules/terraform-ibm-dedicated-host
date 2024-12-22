@@ -34,7 +34,7 @@ module "dedicated_host" {
     },
     {
       host_group_name     = "${var.prefix}-dhgroup"
-      existing_host_group = true
+      existing_host_group = false
       resource_group_id   = module.resource_group.resource_group_id
       class               = "bx2"
       family              = "balanced"
@@ -57,14 +57,14 @@ module "dedicated_host" {
       resource_tags       = var.resource_tags
       dedicated_host = [
         {
-          name    = "${var.prefix}-dhhost-1"
+          name    = "${var.prefix}-dhhost-3"
           profile = "bx2-host-152x608"
         }
       ]
     },
     {
       host_group_name     = "${var.prefix}-dhgroup"
-      existing_host_group = true
+      existing_host_group = false
       resource_group_id   = module.resource_group.resource_group_id
       class               = "bx2"
       family              = "balanced"
@@ -72,7 +72,7 @@ module "dedicated_host" {
       resource_tags       = var.resource_tags
       dedicated_host = [
         {
-          name    = "${var.prefix}-dhhost-2"
+          name    = "${var.prefix}-dhhost-4"
           profile = "bx2d-host-152x608"
         }
       ]
