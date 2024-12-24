@@ -33,13 +33,14 @@ func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptio
 func TestRunBasicExample(t *testing.T) {
 	t.Parallel()
 
-	options := setupOptions(t, "mod-basic", basicExampleDir)
+	options := setupOptions(t, "dh-basic", basicExampleDir)
 
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
 	assert.NotNil(t, output, "Expected some output")
 }
 
+// Advanced test will be added once the quota has been increased.
 // func TestRunAdvancedExample(t *testing.T) {
 //	t.Parallel()
 
@@ -50,15 +51,14 @@ func TestRunBasicExample(t *testing.T) {
 //	assert.NotNil(t, output, "Expected some output")
 //}
 
-// Upgrade test (using upgraded example)
-// func TestRunUpgradeExample(t *testing.T) {
-//	t.Parallel()
+func TestRunUpgradeExample(t *testing.T) {
+	t.Skip()
 
-//	options := setupOptions(t, "mod-adv-upg", upgradeExampleDir)
+	options := setupOptions(t, "dh-upg", basicExampleDir)
 
-//	output, err := options.RunTestUpgrade()
-//	if !options.UpgradeTestSkipped {
-//		assert.Nil(t, err, "This should not have errored")
-//		assert.NotNil(t, output, "Expected some output")
-//	}
-//}
+	output, err := options.RunTestUpgrade()
+	if !options.UpgradeTestSkipped {
+		assert.Nil(t, err, "This should not have errored")
+		assert.NotNil(t, output, "Expected some output")
+	}
+}
