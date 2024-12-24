@@ -11,22 +11,71 @@ module "resource_group" {
 }
 
 ########################################################################################################################
-# COS
+# Advanced Example for Dedicated Host Module
 ########################################################################################################################
 
-#
-# Developer tips:
-#   - Call the local module / modules in the example to show how they can be consumed
-#   - Include the actual module source as a code comment like below so consumers know how to consume from correct location
-#
-
-module "cos" {
+module "dedicated_host" {
   source = "../.."
-  # remove the above line and uncomment the below 2 lines to consume the module from the registry
-  # source            = "terraform-ibm-modules/<replace>/ibm"
-  # version           = "X.Y.Z" # Replace "X.Y.Z" with a release version to lock into a specific release
-  name              = "${var.prefix}-cos"
-  resource_group_id = module.resource_group.resource_group_id
-  resource_tags     = var.resource_tags
-  plan              = "cos-one-rate-plan"
+  dedicated_hosts = [
+    {
+      host_group_name     = "${var.prefix}-dhgroup"
+      existing_host_group = false
+      resource_group_id   = module.resource_group.resource_group_id
+      class               = "bx2"
+      family              = "balanced"
+      zone                = "us-south-1"
+      resource_tags       = var.resource_tags
+      dedicated_host = [
+        {
+          name    = "${var.prefix}-dhhost-1"
+          profile = "bx2-host-152x608"
+        }
+      ]
+    },
+    {
+      host_group_name     = "${var.prefix}-dhgroup"
+      existing_host_group = false
+      resource_group_id   = module.resource_group.resource_group_id
+      class               = "bx2"
+      family              = "balanced"
+      zone                = "us-south-1"
+      resource_tags       = var.resource_tags
+      dedicated_host = [
+        {
+          name    = "${var.prefix}-dhhost-2"
+          profile = "bx2d-host-152x608"
+        }
+      ]
+    },
+    {
+      host_group_name     = "${var.prefix}-dhgroup"
+      existing_host_group = false
+      resource_group_id   = module.resource_group.resource_group_id
+      class               = "bx2"
+      family              = "balanced"
+      zone                = "eu-es-1"
+      resource_tags       = var.resource_tags
+      dedicated_host = [
+        {
+          name    = "${var.prefix}-dhhost-3"
+          profile = "bx2-host-152x608"
+        }
+      ]
+    },
+    {
+      host_group_name     = "${var.prefix}-dhgroup"
+      existing_host_group = false
+      resource_group_id   = module.resource_group.resource_group_id
+      class               = "bx2"
+      family              = "balanced"
+      zone                = "eu-es-1"
+      resource_tags       = var.resource_tags
+      dedicated_host = [
+        {
+          name    = "${var.prefix}-dhhost-4"
+          profile = "bx2d-host-152x608"
+        }
+      ]
+    }
+  ]
 }

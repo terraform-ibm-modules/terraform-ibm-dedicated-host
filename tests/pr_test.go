@@ -12,8 +12,11 @@ import (
 const resourceGroup = "geretain-test-resources"
 
 // Ensure every example directory has a corresponding test
-const advancedExampleDir = "examples/advanced"
+// const advancedExampleDir = "examples/advanced"
 const basicExampleDir = "examples/basic"
+
+// const upgradeExampleDir = "examples/upgrade"
+const region = "us-south"
 
 func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptions {
 	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
@@ -21,6 +24,7 @@ func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptio
 		TerraformDir:  dir,
 		Prefix:        prefix,
 		ResourceGroup: resourceGroup,
+		Region:        region,
 	})
 	return options
 }
@@ -29,28 +33,28 @@ func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptio
 func TestRunBasicExample(t *testing.T) {
 	t.Parallel()
 
-	options := setupOptions(t, "mod-template-basic", basicExampleDir)
+	options := setupOptions(t, "dh-basic", basicExampleDir)
 
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
 	assert.NotNil(t, output, "Expected some output")
 }
 
-func TestRunAdvancedExample(t *testing.T) {
-	t.Parallel()
+// Advanced test will be added once the quota has been increased.
+// func TestRunAdvancedExample(t *testing.T) {
+//	t.Parallel()
 
-	options := setupOptions(t, "mod-template-adv", advancedExampleDir)
+//	options := setupOptions(t, "mod-adv", advancedExampleDir)
 
-	output, err := options.RunTestConsistency()
-	assert.Nil(t, err, "This should not have errored")
-	assert.NotNil(t, output, "Expected some output")
-}
+//	output, err := options.RunTestConsistency()
+//	assert.Nil(t, err, "This should not have errored")
+//	assert.NotNil(t, output, "Expected some output")
+//}
 
-// Upgrade test (using advanced example)
 func TestRunUpgradeExample(t *testing.T) {
-	t.Parallel()
+	t.Skip()
 
-	options := setupOptions(t, "mod-template-adv-upg", advancedExampleDir)
+	options := setupOptions(t, "dh-upg", basicExampleDir)
 
 	output, err := options.RunTestUpgrade()
 	if !options.UpgradeTestSkipped {

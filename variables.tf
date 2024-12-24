@@ -1,36 +1,21 @@
 ########################################################################################################################
-# Input Variables
+# Dedicated Host Input Variables
 ########################################################################################################################
 
-#
-# Developer tips:
-#   - Below are some common module input variables
-#   - They should be updated for input variables applicable to the module being added
-#   - Use variable validation when possible
-#
-
-variable "name" {
-  type        = string
-  description = "A descriptive name used to identify the resource instance."
-}
-
-variable "plan" {
-  type        = string
-  description = "The name of the plan type supported by service."
-  default     = "standard"
-  validation {
-    condition     = contains(["standard", "cos-one-rate-plan"], var.plan)
-    error_message = "The specified pricing plan is not available. The following plans are supported: 'standard', 'cos-one-rate-plan'"
-  }
-}
-
-variable "resource_group_id" {
-  type        = string
-  description = "The ID of the resource group where you want to create the service."
-}
-
-variable "resource_tags" {
-  type        = list(string)
-  description = "List of resource tag to associate with the instance."
-  default     = []
+variable "dedicated_hosts" {
+  type = list(object({
+    host_group_name     = string
+    existing_host_group = optional(bool, false)
+    resource_group_id   = string
+    class               = optional(string, "bx2")
+    family              = optional(string, "balanced")
+    zone                = optional(string, "us-south-1")
+    dedicated_host = list(object({
+      name        = string
+      profile     = optional(string, "bx2-host-152x608")
+      access_tags = optional(list(string), [])
+    }))
+  }))
+  description = "A list of objects which contain the required inputs for the dedicated host and dedicated host groups, a flag indicating the user to use an existing host group by enabling it. Also has the default values for a dedicated host setup which are recommended by IBM Cloud."
+  nullable    = false
 }

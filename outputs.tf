@@ -1,30 +1,18 @@
 ########################################################################################################################
-# Outputs
+# Outputs for Dedicated Hosts and Dedicated Host groups
 ########################################################################################################################
 
-#
-# Developer tips:
-#   - Below are some good practise sample outputs
-#   - They should be updated for outputs applicable to the module being added
-#   - Use variable validation when possible
-#
-
-output "account_id" {
-  description = "An alpha-numeric value identifying the account ID."
-  value       = ibm_resource_instance.cos_instance.account_id
+# Output for all dedicated host group IDs
+output "dedicated_host_group_ids" {
+  value = {
+    for item in local.flattened_hosts :
+    item.key => item.host_group_id...
+  }
+  description = "List the Dedicated Host Group ID's"
 }
 
-output "guid" {
-  description = "The GUID of the resource instance."
-  value       = ibm_resource_instance.cos_instance.account_id
-}
-
-output "id" {
-  description = "The unique identifier of the resource instance."
-  value       = ibm_resource_instance.cos_instance.id
-}
-
-output "crn" {
-  description = "The CRN of the resource instance."
-  value       = ibm_resource_instance.cos_instance.crn
+# Output for all dedicated host IDs
+output "dedicated_host_ids" {
+  value       = [for host in ibm_is_dedicated_host.dh_host : host.id]
+  description = "List the Dedicated Host ID's"
 }
