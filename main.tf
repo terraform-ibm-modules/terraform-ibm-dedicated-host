@@ -2,7 +2,7 @@
 ##   Root Module for Dedicated Host Group                     ##
 ################################################################
 
-locals {
+/*locals {
   flattened_group_hosts = flatten([
     for group in var.dedicated_hosts : [
       for host in group.dedicated_host : {
@@ -17,18 +17,18 @@ locals {
       }
     ]
   ])
-}
+}*/
 
 
 # Dedicated Host Group
 resource "ibm_is_dedicated_host_group" "dh_group" {
   for_each = {
-    for item in local.flattened_group_hosts :
-    "${item.groupname}-${item.hostname}" => item
-    if item.existing_host_group == false
+    for group in var.dedicated_hosts :
+    group.host_group_name => group
+    if group.existing_host_group == false
   }
 
-  name           = each.value.groupname
+  name           = each.value.host_group_name
   class          = each.value.class
   family         = each.value.family
   zone           = each.value.zone
@@ -43,12 +43,12 @@ resource "ibm_is_dedicated_host_group" "dh_group" {
 
 data "ibm_is_dedicated_host_group" "existing_dh_group" {
   for_each = {
-    for item in local.flattened_group_hosts :
-    "${item.groupname}-${item.hostname}" => item
-    if item.existing_host_group == true
+    for group in var.dedicated_hosts :
+    group.host_group_name => group
+    if group.existing_host_group == true
   }
 
-  name = each.value.groupname
+  name = each.value.host_group_name
 }
 
 ################################################################
@@ -61,7 +61,7 @@ locals {
   flattened_hosts = flatten([
     for group in var.dedicated_hosts : [
       for host in group.dedicated_host : {
-        key               = group.host_group_name
+        key               = "${group.host_group_name}-${host.name}"
         name              = host.name
         profile           = host.profile
         host_group_id     = group.existing_host_group ? data.ibm_is_dedicated_host_group.existing_dh_group[group.host_group_name].id : ibm_is_dedicated_host_group.dh_group[group.host_group_name].id
@@ -71,6 +71,7 @@ locals {
     ]
   ])
 }
+
 
 ################################################################
 
