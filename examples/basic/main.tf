@@ -27,7 +27,11 @@ module "dedicated_host" {
       resource_tags       = var.resource_tags
       dedicated_host = [
         {
-          name    = "${var.prefix}-dhhost"
+          name    = "${var.prefix}-dhhost-1"
+          profile = "bx2-host-152x608"
+        },
+        {
+          name    = "${var.prefix}-dhhost-2"
           profile = "bx2-host-152x608"
         }
       ]
