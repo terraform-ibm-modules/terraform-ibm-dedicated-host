@@ -35,21 +35,6 @@ module "dedicated_host" {
           profile = "bx2-host-152x608"
         }
       ]
-    },
-    {
-      host_group_name     = "${var.prefix}-dhgroup-2"
-      existing_host_group = false
-      resource_group_id   = module.resource_group.resource_group_id
-      class               = "bx2"
-      family              = "balanced"
-      zone                = "${var.region}-1"
-      resource_tags       = var.resource_tags
-      dedicated_host = [
-        {
-          name    = "${var.prefix}-dhhost-1"
-          profile = "bx2-host-152x608"
-        }
-      ]
     }
   ]
 }
