@@ -2,7 +2,7 @@
 ##   Root Module for Dedicated Host Group                     ##
 ################################################################
 
-/*locals {
+locals {
   flattened_group_hosts = flatten([
     for group in var.dedicated_hosts : [
       for host in group.dedicated_host : {
@@ -17,8 +17,7 @@
       }
     ]
   ])
-}*/
-
+}
 
 # Dedicated Host Group
 resource "ibm_is_dedicated_host_group" "dh_group" {
@@ -43,12 +42,12 @@ resource "ibm_is_dedicated_host_group" "dh_group" {
 
 data "ibm_is_dedicated_host_group" "existing_dh_group" {
   for_each = {
-    for group in var.dedicated_hosts :
-    group.host_group_name => group
-    if group.existing_host_group == true
+    for item in local.flattened_group_hosts :
+    "${item.groupname}-${item.hostname}" => item
+    if item.existing_host_group == true
   }
 
-  name = each.value.host_group_name
+  name = each.value.groupname
 }
 
 ################################################################
@@ -61,7 +60,7 @@ locals {
   flattened_hosts = flatten([
     for group in var.dedicated_hosts : [
       for host in group.dedicated_host : {
-        key               = "${group.host_group_name}-${host.name}"
+        key               = "${group.host_group_name}-${host.name}" # Ensure uniqueness
         name              = host.name
         profile           = host.profile
         host_group_id     = group.existing_host_group ? data.ibm_is_dedicated_host_group.existing_dh_group[group.host_group_name].id : ibm_is_dedicated_host_group.dh_group[group.host_group_name].id
@@ -80,7 +79,7 @@ locals {
 ################################################################
 
 resource "ibm_is_dedicated_host" "dh_host" {
-  for_each = { for item in local.flattened_hosts : item.name => item }
+  for_each = { for item in local.flattened_hosts : item.key => item }
 
   name           = each.value.name
   profile        = each.value.profile
@@ -88,5 +87,6 @@ resource "ibm_is_dedicated_host" "dh_host" {
   resource_group = each.value.resource_group_id
   access_tags    = each.value.access_tags
 }
+
 
 ################################################################
