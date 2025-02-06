@@ -40,7 +40,7 @@ module "dedicated_host" {
       host_group_name     = "${var.prefix}-dhgroup-2"
       existing_host_group = false
       resource_group_id   = module.resource_group.resource_group_id
-      class               = "cx2"
+      class               = "bx2"
       family              = "balanced"
       zone                = "${var.region}-1"
       resource_tags       = var.resource_tags
