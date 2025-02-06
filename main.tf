@@ -19,16 +19,22 @@ locals {
   ])
 }
 
-
 # Dedicated Host Group
+locals {
+  unique_dedicated_hosts = {
+    for i, group in var.dedicated_hosts :
+    "${group.host_group_name}-${i}" => group
+  }
+}
+
 resource "ibm_is_dedicated_host_group" "dh_group" {
   for_each = {
-    for item in local.flattened_group_hosts :
-    "${item.groupname}-${item.hostname}" => item
-    if item.existing_host_group == false
+    for key, group in local.unique_dedicated_hosts :
+    key => group
+    if group.existing_host_group == false
   }
 
-  name           = each.value.groupname
+  name           = each.value.host_group_name
   class          = each.value.class
   family         = each.value.family
   zone           = each.value.zone
@@ -61,16 +67,18 @@ locals {
   flattened_hosts = flatten([
     for group in var.dedicated_hosts : [
       for host in group.dedicated_host : {
-        key               = group.host_group_name
-        name              = host.name
-        profile           = host.profile
-        host_group_id     = group.existing_host_group ? data.ibm_is_dedicated_host_group.existing_dh_group["${group.host_group_name}-${host.name}"].id : ibm_is_dedicated_host_group.dh_group["${group.host_group_name}-${host.name}"].id
+        key           = "${group.host_group_name}-${host.name}" # Ensure uniqueness
+        name          = host.name
+        profile       = host.profile
+        host_group_id = group.existing_host_group ? data.ibm_is_dedicated_host_group.existing_dh_group["${group.host_group_name}-${host.name}"].id : ibm_is_dedicated_host_group.dh_group["${group.host_group_name}-${index(var.dedicated_hosts, group)}"].id
+        #        host_group_id     = group.existing_host_group ? data.ibm_is_dedicated_host_group.existing_dh_group[group.host_group_name].id : ibm_is_dedicated_host_group.dh_group[group.host_group_name].id
         resource_group_id = group.resource_group_id
         access_tags       = host.access_tags
       }
     ]
   ])
 }
+
 
 ################################################################
 
@@ -79,7 +87,7 @@ locals {
 ################################################################
 
 resource "ibm_is_dedicated_host" "dh_host" {
-  for_each = { for item in local.flattened_hosts : item.name => item }
+  for_each = { for item in local.flattened_hosts : item.key => item }
 
   name           = each.value.name
   profile        = each.value.profile
@@ -87,5 +95,6 @@ resource "ibm_is_dedicated_host" "dh_host" {
   resource_group = each.value.resource_group_id
   access_tags    = each.value.access_tags
 }
+
 
 ################################################################

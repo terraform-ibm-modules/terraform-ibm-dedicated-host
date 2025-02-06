@@ -18,7 +18,7 @@ module "dedicated_host" {
   source = "../.."
   dedicated_hosts = [
     {
-      host_group_name     = "${var.prefix}-dhgroup"
+      host_group_name     = "${var.prefix}-dhgroup-1"
       existing_host_group = false
       resource_group_id   = module.resource_group.resource_group_id
       class               = "bx2"
@@ -27,7 +27,11 @@ module "dedicated_host" {
       resource_tags       = var.resource_tags
       dedicated_host = [
         {
-          name    = "${var.prefix}-dhhost"
+          name    = "${var.prefix}-dhhost-1"
+          profile = "bx2-host-152x608"
+        },
+        {
+          name    = "${var.prefix}-dhhost-2"
           profile = "bx2-host-152x608"
         }
       ]
