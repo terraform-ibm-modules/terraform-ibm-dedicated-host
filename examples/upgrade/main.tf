@@ -96,7 +96,7 @@ locals {
 
 module "slz_vsi" {
   source                = "terraform-ibm-modules/landing-zone-vsi/ibm"
-  version               = "4.4.0"
+  version               = "4.6.0"
   resource_group_id     = module.resource_group.resource_group_id
   image_id              = var.image_id != null ? var.image_id : local.image_ids[var.region]
   create_security_group = false
