@@ -21,18 +21,16 @@ locals {
 
 # Dedicated Host Group
 locals {
+  # Ensure only new groups (existing_host_group = false) are used
   unique_dedicated_hosts = {
-    for i, group in var.dedicated_hosts :
-    "${group.host_group_name}-${i}" => group
+    for group in var.dedicated_hosts :
+    group.host_group_name => group
+    if group.existing_host_group == false
   }
 }
 
 resource "ibm_is_dedicated_host_group" "dh_group" {
-  for_each = {
-    for key, group in local.unique_dedicated_hosts :
-    key => group
-    if group.existing_host_group == false
-  }
+  for_each = local.unique_dedicated_hosts
 
   name           = each.value.host_group_name
   class          = each.value.class
@@ -41,44 +39,32 @@ resource "ibm_is_dedicated_host_group" "dh_group" {
   resource_group = each.value.resource_group_id
 }
 
-################################################################
-
-################################################################
-##   Data Block for finding Existing Dedicated Host Group     ##
-################################################################
-
+# Ensure existing host groups are retrieved correctly
 data "ibm_is_dedicated_host_group" "existing_dh_group" {
   for_each = {
     for item in local.flattened_group_hosts :
-    "${item.groupname}-${item.hostname}" => item
+    item.groupname => item
     if item.existing_host_group == true
   }
 
   name = each.value.groupname
 }
 
-################################################################
-
-################################################################
-##   Local Flattened Hosts                                    ##
-################################################################
-
+# Flattened Hosts with Correct Key Reference
 locals {
   flattened_hosts = flatten([
     for group in var.dedicated_hosts : [
       for host in group.dedicated_host : {
-        key           = "${group.host_group_name}-${host.name}" # Ensure uniqueness
-        name          = host.name
-        profile       = host.profile
-        host_group_id = group.existing_host_group ? data.ibm_is_dedicated_host_group.existing_dh_group["${group.host_group_name}-${host.name}"].id : ibm_is_dedicated_host_group.dh_group["${group.host_group_name}-${index(var.dedicated_hosts, group)}"].id
-        #        host_group_id     = group.existing_host_group ? data.ibm_is_dedicated_host_group.existing_dh_group[group.host_group_name].id : ibm_is_dedicated_host_group.dh_group[group.host_group_name].id
+        key               = "${group.host_group_name}-${host.name}"
+        name              = host.name
+        profile           = host.profile
+        host_group_id     = group.existing_host_group ? data.ibm_is_dedicated_host_group.existing_dh_group[group.host_group_name].id : ibm_is_dedicated_host_group.dh_group[group.host_group_name].id
         resource_group_id = group.resource_group_id
         access_tags       = host.access_tags
       }
     ]
   ])
 }
-
 
 ################################################################
 
