@@ -18,7 +18,7 @@ module "dedicated_host" {
   source = "../.."
   dedicated_hosts = [
     {
-      host_group_name     = "${var.prefix}-dhgroup"
+      host_group_name     = "${var.prefix}-dhgroup1"
       existing_host_group = false
       resource_group_id   = module.resource_group.resource_group_id
       class               = "bx2"
@@ -33,7 +33,7 @@ module "dedicated_host" {
       ]
     },
     {
-      host_group_name     = "${var.prefix}-dhgroup"
+      host_group_name     = "${var.prefix}-dhgroup1"
       existing_host_group = false
       resource_group_id   = module.resource_group.resource_group_id
       class               = "bx2"
@@ -48,7 +48,7 @@ module "dedicated_host" {
       ]
     },
     {
-      host_group_name     = "${var.prefix}-dhgroup"
+      host_group_name     = "${var.prefix}-dhgroup1"
       existing_host_group = false
       resource_group_id   = module.resource_group.resource_group_id
       class               = "bx2"
@@ -63,7 +63,7 @@ module "dedicated_host" {
       ]
     },
     {
-      host_group_name     = "${var.prefix}-dhgroup"
+      host_group_name     = "${var.prefix}-dhgroup1"
       existing_host_group = false
       resource_group_id   = module.resource_group.resource_group_id
       class               = "bx2"
