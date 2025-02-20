@@ -45,7 +45,6 @@ func TestRunBasicExample(t *testing.T) {
 }
 
 func TestRunUpgradeExample(t *testing.T) {
-	t.Skip()
 
 	options := setupOptions(t, "dh-upg", basicExampleDir)
 
