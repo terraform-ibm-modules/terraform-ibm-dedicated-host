@@ -51,12 +51,6 @@ variable "access_tags" {
   }
 }
 
-variable "image_id" {
-  description = "Image ID of the VSI, If none given, the image will be mapped from the local variable based on the region."
-  type        = string
-  default     = null
-}
-
 variable "user_data" {
   description = "User data to initialize VSI deployment"
   type        = string
