@@ -67,7 +67,7 @@ module "slz_vpc" {
 # Provision VSI
 #############################################################################
 data "ibm_is_image" "slz_vsi_image" {
-  name = "ibm-centos-7-9-minimal-amd64-12"
+  name = "ibm-centos-stream-9-amd64-8"
 }
 
 
