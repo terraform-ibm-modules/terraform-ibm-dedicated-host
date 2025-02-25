@@ -2,29 +2,33 @@
 package test
 
 import (
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/cloudinfo"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testhelper"
 )
 
 // Use existing resource group
 const resourceGroup = "geretain-test-resources"
-
-// Ensure every example directory has a corresponding test
-// const advancedExampleDir = "examples/advanced"
 const basicExampleDir = "examples/basic"
 
-// const upgradeExampleDir = "examples/upgrade"
-const region = "us-south"
+var sharedInfoSvc *cloudinfo.CloudInfoService
+
+// TestMain initializes the shared CloudInfo service before all tests run
+func TestMain(m *testing.M) {
+	sharedInfoSvc, _ = cloudinfo.NewCloudInfoServiceFromEnv("TF_VAR_ibmcloud_api_key", cloudinfo.CloudInfoServiceOptions{})
+	os.Exit(m.Run())
+}
 
 func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptions {
 	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
-		Testing:       t,
-		TerraformDir:  dir,
-		Prefix:        prefix,
-		ResourceGroup: resourceGroup,
-		Region:        region,
+		Testing:          t,
+		TerraformDir:     dir,
+		Prefix:           prefix,
+		ResourceGroup:    resourceGroup,
+		CloudInfoService: sharedInfoSvc, // Enable dynamic region selection
 	})
 	return options
 }
@@ -40,19 +44,7 @@ func TestRunBasicExample(t *testing.T) {
 	assert.NotNil(t, output, "Expected some output")
 }
 
-// Advanced test will be added once the quota has been increased.
-// func TestRunAdvancedExample(t *testing.T) {
-//	t.Parallel()
-
-//	options := setupOptions(t, "mod-adv", advancedExampleDir)
-
-//	output, err := options.RunTestConsistency()
-//	assert.Nil(t, err, "This should not have errored")
-//	assert.NotNil(t, output, "Expected some output")
-//}
-
 func TestRunUpgradeExample(t *testing.T) {
-	t.Skip()
 
 	options := setupOptions(t, "dh-upg", basicExampleDir)
 
