@@ -55,7 +55,7 @@ resource "ibm_is_ssh_key" "ssh_key" {
 
 module "slz_vpc" {
   source            = "terraform-ibm-modules/landing-zone-vpc/ibm"
-  version           = "7.22.8"
+  version           = "7.22.9"
   resource_group_id = module.resource_group.resource_group_id
   region            = var.region
   prefix            = var.prefix
@@ -73,7 +73,7 @@ data "ibm_is_image" "slz_vsi_image" {
 
 module "slz_vsi" {
   source                = "terraform-ibm-modules/landing-zone-vsi/ibm"
-  version               = "5.1.2"
+  version               = "5.1.3"
   resource_group_id     = module.resource_group.resource_group_id
   image_id              = data.ibm_is_image.slz_vsi_image.id
   create_security_group = false
