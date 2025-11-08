@@ -14,9 +14,9 @@ This module used to provision dedicated Host which is a fully dedicated, single-
 ## Overview
 * [terraform-ibm-dedicated-host](#terraform-ibm-dedicated-host)
 * [Examples](./examples)
-    * [Advanced example](./examples/advanced)
-    * [Basic example](./examples/basic)
-    * [Upgraded example](./examples/upgrade)
+    * <div style="display: inline-block;"><a href="./examples/advanced">Advanced example</a></div> <div style="display: inline-block; vertical-align: middle;"><a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=dh-advanced-example&repository=github.com/terraform-ibm-modules/terraform-ibm-dedicated-host/tree/main/examples/advanced" target="_blank"><img src="https://cloud.ibm.com/media/docs/images/icons/Deploy_to_cloud.svg" alt="Deploy to IBM Cloud button"></a></div>
+    * <div style="display: inline-block;"><a href="./examples/basic">Basic example</a></div> <div style="display: inline-block; vertical-align: middle;"><a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=dh-basic-example&repository=github.com/terraform-ibm-modules/terraform-ibm-dedicated-host/tree/main/examples/basic" target="_blank"><img src="https://cloud.ibm.com/media/docs/images/icons/Deploy_to_cloud.svg" alt="Deploy to IBM Cloud button"></a></div>
+    * <div style="display: inline-block;"><a href="./examples/upgrade">Upgraded example</a></div> <div style="display: inline-block; vertical-align: middle;"><a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=dh-upgrade-example&repository=github.com/terraform-ibm-modules/terraform-ibm-dedicated-host/tree/main/examples/upgrade" target="_blank"><img src="https://cloud.ibm.com/media/docs/images/icons/Deploy_to_cloud.svg" alt="Deploy to IBM Cloud button"></a></div>
 * [Contributing](#contributing)
 <!-- END OVERVIEW HOOK -->
 
