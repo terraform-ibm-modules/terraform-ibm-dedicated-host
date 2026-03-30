@@ -1,5 +1,14 @@
 # Upgraded example
 
+<!-- BEGIN SCHEMATICS DEPLOY HOOK -->
+<p>
+  <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=dedicated-host-upgrade-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-dedicated-host/tree/main/examples/upgrade">
+    <img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics">
+  </a><br>
+  ℹ️ Ctrl/Cmd+Click or right-click on the Schematics deploy button to open in a new tab.
+</p>
+<!-- END SCHEMATICS DEPLOY HOOK -->
+
 ### Provisioning a Dedicated Host Group:
 - Creates a dedicated host group if existing_host_group is false.
 - Option to use an existing host group by setting existing_host_group to true.
