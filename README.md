@@ -13,13 +13,27 @@ This module used to provision dedicated Host which is a fully dedicated, single-
 
 <!-- BEGIN OVERVIEW HOOK -->
 ## Overview
-* [terraform-ibm-dedicated-host](#terraform-ibm-dedicated-host)
-* [Examples](./examples)
-:information_source: Ctrl/Cmd+Click or right-click on the Schematics deploy button to open in a new tab
-    * <a href="./examples/advanced">Advanced example</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=dedicated-host-advanced-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-dedicated-host/tree/main/examples/advanced"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
-    * <a href="./examples/basic">Basic example</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=dedicated-host-basic-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-dedicated-host/tree/main/examples/basic"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
-    * <a href="./examples/upgrade">Upgraded example</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=dedicated-host-upgrade-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-dedicated-host/tree/main/examples/upgrade"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
-* [Contributing](#contributing)
+<ul>
+  <li><a href="#terraform-ibm-dedicated-host">terraform-ibm-dedicated-host</a></li>
+  <li><a href="./examples">Examples</a>
+    <ul>
+      <li>
+        <a href="./examples/advanced">Advanced example</a>
+        <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=dedicated-host-advanced-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-dedicated-host/tree/main/examples/advanced"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
+      </li>
+      <li>
+        <a href="./examples/basic">Basic example</a>
+        <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=dedicated-host-basic-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-dedicated-host/tree/main/examples/basic"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
+      </li>
+      <li>
+        <a href="./examples/upgrade">Upgraded example</a>
+        <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=dedicated-host-upgrade-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-dedicated-host/tree/main/examples/upgrade"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
+      </li>
+    </ul>
+    ℹ️ Ctrl/Cmd+Click or right-click on the Schematics deploy button to open in a new tab.
+  </li>
+  <li><a href="#contributing">Contributing</a></li>
+</ul>
 <!-- END OVERVIEW HOOK -->
 
 ## terraform-ibm-dedicated-host
@@ -94,7 +108,7 @@ You need the following permissions to run this module.
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
-| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >= 1.79.0, < 2.0.0 |
+| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >= 1.79.0, < 3.0.0 |
 
 ### Modules
 
