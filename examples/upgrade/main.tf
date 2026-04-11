@@ -4,7 +4,7 @@
 
 module "resource_group" {
   source  = "terraform-ibm-modules/resource-group/ibm"
-  version = "1.5.0"
+  version = "1.6.0"
   # if an existing resource group is not set (null) create a new one using prefix
   resource_group_name          = var.resource_group == null ? "${var.prefix}-resource-group" : null
   existing_resource_group_name = var.resource_group
@@ -55,7 +55,7 @@ resource "ibm_is_ssh_key" "ssh_key" {
 
 module "slz_vpc" {
   source            = "terraform-ibm-modules/landing-zone-vpc/ibm"
-  version           = "8.16.1"
+  version           = "8.16.2"
   resource_group_id = module.resource_group.resource_group_id
   region            = var.region
   prefix            = var.prefix
@@ -73,7 +73,7 @@ data "ibm_is_image" "slz_vsi_image" {
 
 module "slz_vsi" {
   source                = "terraform-ibm-modules/landing-zone-vsi/ibm"
-  version               = "6.2.7"
+  version               = "6.2.10"
   resource_group_id     = module.resource_group.resource_group_id
   image_id              = data.ibm_is_image.slz_vsi_image.id
   create_security_group = false
