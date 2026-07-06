@@ -73,11 +73,11 @@ data "ibm_is_image" "slz_vsi_image" {
 
 module "slz_vsi" {
   source                = "terraform-ibm-modules/landing-zone-vsi/ibm"
-  version               = "6.5.5"
+  version               = "6.6.0"
   resource_group_id     = module.resource_group.resource_group_id
   image_id              = data.ibm_is_image.slz_vsi_image.id
   create_security_group = false
-  tags                  = var.resource_tags
+  resource_tags         = var.resource_tags
   access_tags           = var.access_tags
   subnets               = module.slz_vpc.subnet_zone_list
   vpc_id                = module.slz_vpc.vpc_id
