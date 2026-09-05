@@ -55,7 +55,7 @@ resource "ibm_is_ssh_key" "ssh_key" {
 
 module "slz_vpc" {
   source            = "terraform-ibm-modules/landing-zone-vpc/ibm"
-  version           = "10.0.3"
+  version           = "10.0.4"
   resource_group_id = module.resource_group.resource_group_id
   region            = var.region
   prefix            = var.prefix
