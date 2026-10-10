@@ -106,7 +106,7 @@ You need the following permissions to run this module.
 ### Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
 | <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >= 1.79.0, < 3.0.0 |
 
@@ -117,7 +117,7 @@ No modules.
 ### Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [ibm_is_dedicated_host.dh_host](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_dedicated_host) | resource |
 | [ibm_is_dedicated_host_group.dh_group](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_dedicated_host_group) | resource |
 | [ibm_is_dedicated_host_group.existing_dh_group](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/is_dedicated_host_group) | data source |
@@ -125,13 +125,13 @@ No modules.
 ### Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_dedicated_hosts"></a> [dedicated\_hosts](#input\_dedicated\_hosts) | A list of objects which contain the required inputs for the dedicated host and dedicated host groups, a flag indicating the user to use an existing host group by enabling it. Also has the default values for a dedicated host setup which are recommended by IBM Cloud. | <pre>list(object({<br/>    host_group_name     = string<br/>    existing_host_group = optional(bool, false)<br/>    resource_group_id   = string<br/>    class               = optional(string, "bx2")<br/>    family              = optional(string, "balanced")<br/>    zone                = optional(string, "us-south-1")<br/>    dedicated_host = list(object({<br/>      name        = string<br/>      profile     = optional(string, "bx2-host-152x608")<br/>      access_tags = optional(list(string), [])<br/>    }))<br/>  }))</pre> | n/a | yes |
 
 ### Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_dedicated_host_group_ids"></a> [dedicated\_host\_group\_ids](#output\_dedicated\_host\_group\_ids) | List the Dedicated Host Group ID's |
 | <a name="output_dedicated_host_ids"></a> [dedicated\_host\_ids](#output\_dedicated\_host\_ids) | List the Dedicated Host ID's |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
